@@ -1,0 +1,20 @@
+---
+title: "Project 3: MyStat302Package Tutorial"
+author: "Chaos Gao"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MyStat302Package Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(MyStat302Package)
+```

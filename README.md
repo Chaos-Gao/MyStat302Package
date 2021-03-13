@@ -9,7 +9,7 @@ The goal of MyStat302Package is to ...
 
 ## Installation
 
-You can install the released version of MyStat302Package from [CRAN](https://CRAN.R-project.org) with:
+You can install the MyStat302Package Package using the following line:
 
 ``` r
 install.packages("MyStat302Package")
