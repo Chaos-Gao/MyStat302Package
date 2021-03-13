@@ -1,12 +1,12 @@
 Package: MyStat302Package
-Title: The package for STAT302 Project 3
+Title: The Package for STAT302 Project 3
 Version: 0.1.0
 Authors@R: 
     person(given = "Yuanqing",
            family = "Gao",
            role = c("aut", "cre"),
            email = "gyq2018@uw.edu")
-Description: The first R package that design for STAT302 Project 3.
+Description: The First R Package that Design for STAT302 Project 3.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
