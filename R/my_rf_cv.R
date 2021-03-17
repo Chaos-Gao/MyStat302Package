@@ -15,6 +15,10 @@
 #'
 #' @export
 my_rf_cv <- function(k) {
+  if (!is.numeric(k) || k < 2) {
+    stop("parameter k must be a integer bigger than 2")
+  }
+
   # Remove NA from penguins data
   penguins_data <- na.omit(MyStat302Package::my_penguins)
   # Get the X variable data

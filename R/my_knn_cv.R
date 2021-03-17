@@ -21,6 +21,13 @@
 #'
 #' @export
 my_knn_cv <- function(train, cl, k_nn, k_cv) {
+  if (!is.numeric(k_nn) || k_nn < 1) {
+    stop("parameter k_nn must be a integer bigger than 2")
+  }
+  if (!is.numeric(k_cv) || k_cv < 2) {
+    stop("parameter k_cv must be a integer bigger than 2")
+  }
+
   # Split data in k_cv parts, randomly
   fold <- k_cv
   inds <- sample(rep(1:fold, length = nrow(train)))

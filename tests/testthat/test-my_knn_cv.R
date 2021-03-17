@@ -9,10 +9,6 @@ test_that("my_knn_cv works mathematically", {
   expect_type(check_knn[[2]], "double")
 })
 
-test_that("improper train and cl input throws error", {
-  expect_error(my_knn_cv(1:10, 1, 5, 5))
-})
-
 test_that("k_nn parameter smaller than 1 or non-numeric throws error", {
   expect_error(my_knn_cv(train, cl, 0, 5))
   expect_error(my_knn_cv(train, cl, "a string", 5))
