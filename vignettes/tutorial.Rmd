@@ -1,6 +1,5 @@
 ---
-title: "Project 3: MyStat302Package Tutorial"
-author: "Chaos Gao"
+usauthor: "Chaos Gao"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MyStat302Package Tutorial}
@@ -17,4 +16,105 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(MyStat302Package)
+library(ggplot2)
+library(dplyr)
+library(class)
+library(randomForest)
 ```
+
+## my_t.test Tutorial
+
+```{r}
+# A two tail t-test, with 60 as null hypothesis mean value, and alternative 
+# hypothesis is mu not equal to 60
+lifeExp_data <- my_gapminder$lifeExp
+my_t.test(lifeExp_data, mu = 60)
+```
+
+* For the two side T-test, we have p value 0.09322, which is bigger than 0.05. Thus, we don't have sufficient evidence to reject the null hypothesis and can't support our alternative hypothesis.
+
+```{r}
+# A left tail t-test, with 60 as null hypothesis mean value, and alternative 
+# hypothesis is mu smaller than 60
+my_t.test(lifeExp_data, alternative = "less", mu = 60)
+```
+
+* For the left tailed T-test, we have p value 0.04661, which is smaller than 0.05. Thus, we have sufficient evidence to reject the null hypothesis and support our alternative hypothesis, which is mu < 60.
+
+```{r}
+# A right tail t-test, with 60 as null hypothesis mean value, and alternative 
+# hypothesis is mu greater than 60
+my_t.test(lifeExp_data, alternative = "greater", mu = 60)
+```
+
+* For the right tailed T-test, we have p value 0.95339, which is bigger than 0.05. Thus, we don't have sufficient evidence to reject the null hypothesis and can't support our alternative hypothesis, which is mu > 60
+
+## my_lm Tutorial
+
+```{r}
+my_lm(lifeExp ~ continent + gdpPercap, data = my_gapminder)
+```
+
+## my_knn_cv Tutorial
+
+```{r}
+# Remove NA in Data
+penguins_data <- na.omit(my_penguins)
+# Get the train and cl parameter from the data
+train <- penguins_data[, 3:6]
+cl <- penguins_data$species
+
+pred_class_list <- list()
+cv_err_vec <- vector()
+for (j in 1:10) {
+  temp <- my_knn_cv(train, cl, j, 5)
+  pred_class_list[[j]] <- temp[[1]]
+  cv_err_vec[j] <- temp[[2]]
+}
+
+train_err_vec <- vector()
+for (i in 1:10) {
+  train_err_vec[i] <- sum(pred_class_list[[i]] != penguins_data$species) / 
+    length(pred_class_list[[i]])
+}
+
+compare_err <- cbind.data.frame(cv_err_vec, train_err_vec)
+compare_err
+```
+* Based on both the training misclassification rates and the CV misclassification rates, we would choose the 1 nearest neighbor cross-validation model.
+* Also, in practice, we would choose 1 nearest neighbor cross-validation model, because it has the least the training misclassification rates and the CV misclassification rates.
+* To apply the k-fold cross-validation, it first split data into k parts (folds). Then use all but 1 fold as your training data and fit the model and use the remaining fold for your test data and make predictions. Switch which fold is your test data and repeat previous steps until all folds have been test data (k times).Lastly, compute squared error.
+* Cross-validation is important because it generally results in a less biased or less optimistic estimate of the model skill than all other methods.
+
+## my_rf_cv Tutorial
+
+```{r}
+fold_vec <- c(2, 5, 8)
+cv_err_max <- matrix(nrow = 30, ncol = length(fold_vec))
+for (i in 1:length(fold_vec)) {
+  for (j in 1:30) {
+    cv_err_max[j, i] <- my_rf_cv(fold_vec[i])
+  }
+}
+```
+
+```{r}
+cv_err_data <- as.data.frame(cv_err_max)
+colnames(cv_err_data) <- c("Fold2", "Fold5", "Fold8")
+ggplot(data = cv_err_data) + 
+  geom_boxplot(aes(x = "k = 2", y = Fold2)) +
+  geom_boxplot(aes(x = "k = 5", y = Fold5)) +
+  geom_boxplot(aes(x = "k = 8", y = Fold8))
+```
+
+```{r}
+mean_err_vec <- colMeans(cv_err_max)
+sd_err_vec <- vector()
+for (i in 1:3) {
+  sd_err_vec[i] <- sd(cv_err_max[, i])
+}
+cv_mean_sd <- cbind.data.frame(mean_err_vec, sd_err_vec)
+cv_mean_sd
+```
+* According to the table and the box plot, the greater the value of k the smaller the means and the smaller the standard deviations. Since the more groups we split when testing, the more accurate the result. The more accurate the result, the smaller the mean error and the standard error.
+
