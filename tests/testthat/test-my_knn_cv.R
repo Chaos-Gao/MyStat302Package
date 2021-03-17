@@ -5,7 +5,7 @@ test_that("my_knn_cv works mathematically", {
   check_knn <- my_knn_cv(train, cl, 5, 5)
 
   expect_type(check_knn, "list")
-  expect_is(check_knn[[1]], "factor")
+  expect_type(check_knn[[1]], "integer")
   expect_type(check_knn[[2]], "double")
 })
 
