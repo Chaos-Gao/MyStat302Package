@@ -20,6 +20,7 @@ library(ggplot2)
 library(dplyr)
 library(class)
 library(randomForest)
+library(palmerpenguins)
 ```
 
 ## my_t.test Tutorial
@@ -90,31 +91,37 @@ compare_err
 
 ```{r}
 fold_vec <- c(2, 5, 8)
-cv_err_max <- matrix(nrow = 30, ncol = length(fold_vec))
+cv_err_mat <- matrix(nrow = 30, ncol = length(fold_vec))
 for (i in 1:length(fold_vec)) {
   for (j in 1:30) {
-    cv_err_max[j, i] <- my_rf_cv(fold_vec[i])
+    cv_err_mat[j, i] <- my_rf_cv(fold_vec[i])
   }
 }
 ```
 
-```{r}
-cv_err_data <- as.data.frame(cv_err_max)
+```{r, fig.width=5}
+cv_err_data <- as.data.frame(cv_err_mat)
 colnames(cv_err_data) <- c("Fold2", "Fold5", "Fold8")
 ggplot(data = cv_err_data) + 
   geom_boxplot(aes(x = "k = 2", y = Fold2)) +
   geom_boxplot(aes(x = "k = 5", y = Fold5)) +
-  geom_boxplot(aes(x = "k = 8", y = Fold8))
+  geom_boxplot(aes(x = "k = 8", y = Fold8)) +
+  theme_bw(base_size = 10) +
+  labs(title = "The MSE Distribution for k-folds Cross Validation",
+       x = "Number of Folds",
+       y = "CV Estimated MSE ") +
+  theme(plot.title =
+        element_text(hjust = 0.5))
 ```
 
 ```{r}
-mean_err_vec <- colMeans(cv_err_max)
+mean_err_vec <- colMeans(cv_err_mat)
 sd_err_vec <- vector()
 for (i in 1:3) {
-  sd_err_vec[i] <- sd(cv_err_max[, i])
+  sd_err_vec[i] <- sd(cv_err_mat[, i])
 }
 cv_mean_sd <- cbind.data.frame(mean_err_vec, sd_err_vec)
 cv_mean_sd
 ```
-* According to the table and the box plot, the greater the value of k the smaller the means and the smaller the standard deviations. Since the more groups we split when testing, the more accurate the result. The more accurate the result, the smaller the mean error and the standard error.
+* According to the table and the box plot, the greater the value of k the smaller the mean error and the smaller the error's standard deviations. Since the more groups we split (bigger k) when doing CV, the more data are used to train our model. Therefore, our model would be more unbiased with smaller average test error. The standard deviation is also smaller when k increased. When k = 2, we only train our model with half of the sample data each time, which can lead to huge error difference since we split the data randomly. When k = 8, we might have our ideal trade-off bewteen bias and variance- the model we have each time is correlated moderatly and is trained with sufficient data, so the variance becomes lower. 
 
