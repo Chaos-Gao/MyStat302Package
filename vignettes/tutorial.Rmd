@@ -20,7 +20,6 @@ library(ggplot2)
 library(dplyr)
 library(class)
 library(randomForest)
-library(palmerpenguins)
 ```
 
 ## my_t.test Tutorial
