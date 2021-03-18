@@ -67,7 +67,7 @@ my_t.test(lifeExp_data, alternative = "greater", mu = 60)
 ## my_lm Tutorial
 
 ```{r}
-my_lm(lifeExp ~ continent + gdpPercap, data = my_gapminder)
+linear_pred <- my_lm(lifeExp ~ continent + gdpPercap, data = my_gapminder)
 ```
 
 ## my_knn_cv Tutorial
