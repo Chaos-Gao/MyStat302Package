@@ -15,12 +15,26 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+# Loading all the packages that are needed for this tutorial
 library(MyStat302Package)
 library(ggplot2)
 library(dplyr)
 library(class)
 library(randomForest)
 ```
+
+## Brief Introduction
+For this MyStat302Package, you can install it by
+```{r, eval=FALSE}
+install.packages("MyStat302Package")
+library(MyStat302Package)
+```
+or
+```{r, eval=FALSE}
+devtools::install_github("Chaos-Gao/MyStat302Package")
+library(MyStat302Package)
+```
+In this package, it includes six functions, which are my_pow, f_to_c, my_t.test, my_lm, my_knn_cv, and my_rf_cv. Below contains four tutorial for my_t.test, my_lm, my_knn_cv, and my_rf_cv respectively.
 
 ## my_t.test Tutorial
 
@@ -64,20 +78,25 @@ penguins_data <- na.omit(my_penguins)
 train <- penguins_data[, 3:6]
 cl <- penguins_data$species
 
+# The list record the prediction
 pred_class_list <- list()
+# The vector record the test error
 cv_err_vec <- vector()
+# Do the knn prediction from 1 nearest neighbor to 10 nearest neighbors
 for (j in 1:10) {
   temp <- my_knn_cv(train, cl, j, 5)
   pred_class_list[[j]] <- temp[[1]]
   cv_err_vec[j] <- temp[[2]]
 }
 
+# Calculate the training error
 train_err_vec <- vector()
 for (i in 1:10) {
   train_err_vec[i] <- sum(pred_class_list[[i]] != penguins_data$species) / 
     length(pred_class_list[[i]])
 }
 
+# Construct a table showing both the training and testing error
 compare_err <- cbind.data.frame(cv_err_vec, train_err_vec)
 compare_err
 ```
@@ -89,6 +108,7 @@ compare_err
 ## my_rf_cv Tutorial
 
 ```{r}
+# Do the CV test with k = 2, 5, 8, and for each k, run 30 times
 fold_vec <- c(2, 5, 8)
 cv_err_mat <- matrix(nrow = 30, ncol = length(fold_vec))
 for (i in 1:length(fold_vec)) {
@@ -99,6 +119,7 @@ for (i in 1:length(fold_vec)) {
 ```
 
 ```{r, fig.width=5}
+# Drew the three boxplots
 cv_err_data <- as.data.frame(cv_err_mat)
 colnames(cv_err_data) <- c("Fold2", "Fold5", "Fold8")
 ggplot(data = cv_err_data) + 
@@ -114,11 +135,14 @@ ggplot(data = cv_err_data) +
 ```
 
 ```{r}
+# Calculate the mean and sd of the MSE
 mean_err_vec <- colMeans(cv_err_mat)
 sd_err_vec <- vector()
 for (i in 1:3) {
   sd_err_vec[i] <- sd(cv_err_mat[, i])
 }
+
+# Show the mean and sd in a table
 cv_mean_sd <- cbind.data.frame(mean_err_vec, sd_err_vec)
 cv_mean_sd
 ```

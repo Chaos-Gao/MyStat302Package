@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/Chaos-Gao/MyStat302Package/workflows/R-CMD-check/badge.svg)](https://github.com/Chaos-Gao/MyStat302Package/actions)
+[![codecov](https://codecov.io/gh/Chaos-Gao/MyStat302Package/branch/master/graph/badge.svg?token=L7RPQBVWOO)](https://codecov.io/gh/Chaos-Gao/MyStat302Package)
 <!-- badges: end -->
 
 The goal of MyStat302Package is to ...
