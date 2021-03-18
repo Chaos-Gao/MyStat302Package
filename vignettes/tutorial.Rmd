@@ -1,5 +1,6 @@
 ---
-usauthor: "Chaos Gao"
+title: "Project 3: MyStat302Package"
+author: "Chaos Gao"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MyStat302Package Tutorial}
@@ -34,7 +35,7 @@ or
 devtools::install_github("Chaos-Gao/MyStat302Package")
 library(MyStat302Package)
 ```
-In this package, it includes six functions, which are my_pow, f_to_c, my_t.test, my_lm, my_knn_cv, and my_rf_cv. Below contains four tutorial for my_t.test, my_lm, my_knn_cv, and my_rf_cv respectively.
+In this package, it includes six functions, which are my_pow, f_to_c, my_t.test, my_lm, my_knn_cv, and my_rf_cv. Below contains four tutorials for my_t.test, my_lm, my_knn_cv, and my_rf_cv respectively.
 
 ## my_t.test Tutorial
 
