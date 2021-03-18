@@ -67,8 +67,34 @@ my_t.test(lifeExp_data, alternative = "greater", mu = 60)
 ## my_lm Tutorial
 
 ```{r}
+# Operate the linear regression
 linear_pred <- my_lm(lifeExp ~ continent + gdpPercap, data = my_gapminder)
+linear_pred
 ```
+* The gdpPercap coefficient is 4.452704e-04. Holding other things constant, one unit increase in gdpPercap leads to 4.452704e-04 unit increase in lifeExp. 
+* The null hypothesis is the coefficient of gdpPercap equals to zero. The alternative is the coefficient of gdpPercap does not equal zero. 
+* The p value generated from the function is smaller than 0.05. Thus the result is statistically significant. Therefore, we reject the null hypothesis and conclude that there is a relationship between gdpPercap and lifeExp.
+
+```{r, fig.width=5}
+# Extract the coefficients
+my_estimates <- linear_pred[, 1]
+# Extract X variable
+my_X <- model.matrix(lifeExp ~ continent + gdpPercap, my_gapminder)
+# Calculate the fitted data
+lifeExp_fit <- my_X %*% my_estimates
+
+# Drew the Actual vs. Fitted plot
+my_df <- data.frame(actual = my_gapminder$lifeExp, fitted = lifeExp_fit, 
+                    continent = my_gapminder$continent)
+ggplot(my_df, aes(x = fitted, y = actual, color = continent)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) + 
+  theme_bw(base_size = 15) +
+  labs(x = "Fitted values", y = "Actual values", title = "Actual vs. Fitted") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+* The fitted line cut through the middle value of the data points from each state. The points that lie above y = x have the actual value bigger than the fit value, and the points that lie below y = x have the fit value bigger than the actual value. However, many other random things also influence lifeExp, so that there are many outliers on the graph. So we conclude that the model is not fit well.
 
 ## my_knn_cv Tutorial
 
