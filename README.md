@@ -14,6 +14,7 @@ You can install the MyStat302Package Package using the following line:
 
 ``` r
 install.packages("MyStat302Package")
+library(MyStat302Package)
 ```
 
 Alternatively, you can install the development version directly from GitHub.
@@ -21,6 +22,14 @@ Alternatively, you can install the development version directly from GitHub.
 ```r
 # install.packages("devtools")
 devtools::install_github("Chaos-Gao/MyStat302Package")
+library(MyStat302Package)
+```
+
+Or, you can install the Package with vignettes from Github.
+
+```r
+# install.packages("devtools")
+devtools::install_github("Chaos-Gao/MyStat302Package", build_vignette = TRUE, build_opts = c())
 library(MyStat302Package)
 ```
 

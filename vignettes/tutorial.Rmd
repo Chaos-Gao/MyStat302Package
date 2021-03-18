@@ -1,6 +1,6 @@
 ---
 title: "Project 3: MyStat302Package"
-author: "Chaos Gao"
+author: "Chaos Gao, Sherry Sheng"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MyStat302Package Tutorial}
